@@ -16,6 +16,7 @@ class ViewController: UITableViewController {
             pictures.append(item)
             }
         }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recomendApp))
     }
     
     func sortPictures(pictures: [String]) -> [String]{
@@ -44,5 +45,10 @@ class ViewController: UITableViewController {
             vc.numberOfAllImages=pictures.count
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    @objc func recomendApp() {
+        let vc = UIActivityViewController(activityItems: ["You need to start using this application"], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc,animated: true)
     }
 }
