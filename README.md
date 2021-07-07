@@ -1,1 +1,1 @@
-My first iOS application. Learning from HackingWithSwift
+Project 1 from Hacking With Swift
