@@ -1,22 +1,30 @@
 import UIKit
 
 class ViewController: UITableViewController {
-    
     var pictures = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Storm viewer"
         navigationController?.navigationBar.prefersLargeTitles = true
-        let fileManager = FileManager.default
-        let path = Bundle.main.resourcePath!
-        let items = try! fileManager.contentsOfDirectory(atPath: path)
-        for item in items{
-            if item.hasPrefix("nssl"){
-            pictures.append(item)
+        DispatchQueue.global(qos: .background).async {
+            [weak self] in
+            let fileManager = FileManager.default
+            let path = Bundle.main.resourcePath!
+            let items = try! fileManager.contentsOfDirectory(atPath: path)
+            for item in items{
+                if item.hasPrefix("nssl"){
+                    self?.pictures.append(item)
+                }
             }
         }
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recomendApp))
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.tableView.reloadData()
+        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action,
+                                                            target: self,
+                                                            action: #selector(recomendApp))
     }
     
     func sortPictures(pictures: [String]) -> [String]{
@@ -47,7 +55,8 @@ class ViewController: UITableViewController {
         }
     }
     @objc func recomendApp() {
-        let vc = UIActivityViewController(activityItems: ["You need to start using this application"], applicationActivities: [])
+        let vc = UIActivityViewController(activityItems: ["You need to start using this application"],
+                                          applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc,animated: true)
     }

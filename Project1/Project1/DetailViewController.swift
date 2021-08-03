@@ -11,19 +11,17 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         title="Picture \(numberOfImage!) of \(numberOfAllImages!)"
         navigationItem.largeTitleDisplayMode = .never
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action,
+                                                            target: self,
+                                                            action: #selector(shareTapped))
         if let imageLoad = imageOutput {
             Picture.image = UIImage(named: imageLoad)
         }
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.hidesBarsOnTap = true
     }
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         navigationController?.hidesBarsOnTap = false
@@ -33,7 +31,8 @@ class DetailViewController: UIViewController {
             print("Image not found")
             return
         }
-        let vc = UIActivityViewController(activityItems: [image], applicationActivities: [])
+        let vc = UIActivityViewController(activityItems: [image,"Download photo"],
+                                          applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }
